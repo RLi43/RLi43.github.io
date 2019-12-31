@@ -1,24 +1,148 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>测试页面</title>
-    <link href="styles/style.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <h1>Mozilla 酷毙了！</h1>
-    <img src="images/firefox-icon.png" alt="Firefox 标志：一只盘旋在地球上的火狐">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy New Year</title>
+    <style type="text/css">
+        *{
+            margin:0;
+            padding: 0;
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            background-color: #000;
+            overflow: hidden;
+        }
+        .firework{
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: red;
+        }
+        .fireworks{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: absolute;
+            background-color: red;
+        }
+        .info h1{
+            color: #8B0000;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .info{
+            display: none;
+            left: 50%;
+            top: 50%;
+        }
+        .tips{
+            color: FireBrick;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            font-size: 64px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="tips">Happy New Year!</div>
+    <div class="info">
+        <h1>Wish you happy all the time!</h1>
+    </div>
+    <script type="text/javascript">
+        infor = document.getElementsByClassName('info')[0];
+        infors = document.getElementsByTagName('h1')[0];
+		var clicked = 0;
+        document.onclick = function(ev){
+            infors.style.color = color();
+			clicked = clicked + 1;
+			if(clicked%2 == 0) {
+				infor.style.display = "block";	
+			}
+			else {
+				infor.style.display = "none";
+			}
+            var ev = ev || window.event;
+            console.log();
+            var oDiv = document.createElement("div");
+            oDiv.className  = "firework"
+            x = ev.clientX;
+            y = ev.clientY;
+            oDiv.style.left = x + "px";
+			var r =Math.ceil(Math.random()*0)+Math.ceil((x/document.body.clientWidth)*50)+185;
+			var g =Math.ceil(Math.random()*100 )+Math.ceil((x/document.body.clientWidth)*100)+35;
+			var b =Math.ceil(Math.random()*100)+Math.ceil((y/document.body.clientHeight)*100)+35;
+			var acolor = "rgb("+r+","+g+" , "+b+")";
+			var bcolor = "rgb("+(r+50)+","+(g+50)+" , "+(b+50)+")";
+            oDiv.style.backgroundColor = bcolor;
+            oDiv.style.top = document.body.clientHeight  + "px";
+            document.body.appendChild(oDiv);
 
-    <p>Mozilla 是一个全球社区，这里聚集着来自五湖四海的</p>
+            var speed = 10;
+            var timer = setInterval(function(){
+                oDiv.style.top = oDiv.offsetTop - speed + "px";
+                if(oDiv.offsetTop<=ev.clientY){
+                    oDiv.offsetTop = ev.clientY;
+                    clearInterval(timer);
+                    document.body.removeChild(oDiv);
+                    firework(x,y,bcolor);
+                }
+            },1000/60)
 
-    <ul>
-      <li>技术人员</li>
-      <li>思考者</li>
-      <li>建造者</li>
-    </ul>
 
-    <p>我们致力于让 Internet 保持活力，保持畅通，人人皆可贡献，人人皆可创造。我们坚信：开放平台的协作对于人的发展至关重要，也决定着我们共同的未来。</p>
 
-    <p>为了达成我们共同的理想，我们遵循一系列的价值观和理念，请参阅 <a href="https://www.mozilla.org/zh-CN/about/manifesto/">Mozilla 宣言</a>。</p>
-  </body>
-</html>
+
+            function firework(x,y,bcolor){
+                var n = Math.ceil(Math.random()*30) + 15;
+                var sDiv = [];
+                for(var i=0;i<n;i++){
+                    sDiv[i] = document.createElement("div");
+                    sDiv[i].className = "fireworks";
+                    sDiv[i].style.left = x + "px";
+                    sDiv[i].style.top = y + "px";
+                    sDiv[i].style.backgroundColor = bcolor;//();
+                    sDiv[i].speedx = Math.ceil(Math.random()*20) - 10;
+                    sDiv[i].speedy = Math.ceil(Math.random()*20) - 10;
+                    document.body.appendChild(sDiv[i]);
+                }
+
+
+
+                    setInterval(function(){
+                    for(var i =0; i<n ; i++){
+
+                        sDiv[i].style.left = sDiv[i].offsetLeft + sDiv[i].speedx + "px";
+                        sDiv[i].style.top = sDiv[i].offsetTop + sDiv[i].speedy + "px";
+
+                        if(sDiv[i].speedy < 30){
+                            sDiv[i].speedy ++;
+                        }
+
+
+                        if(sDiv[i].offsetLeft<0 || sDiv[i].offsetLeft > document.body.offsetWidth || sDiv[i].offsetTop>document.body.offsetHeight){
+                            document.body.removeChild(sDiv[i]);
+                        }
+                    }
+                },1000/60)
+            }
+        }
+
+
+        function color(){
+                var r =Math.ceil(Math.random()*225)+10;
+                var g =Math.ceil(Math.random()*225)+10;
+                var b =Math.ceil(Math.random()*225)+10;
+                return "rgb("+r+","+g+" , "+b+")";
+            }
+
+
+    </script>
+</body>
+</html
